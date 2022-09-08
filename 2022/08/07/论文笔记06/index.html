@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Abstract主流的sequence transduction models都是基于复杂的RNN或者CNN做的，通常由一个encoder和一个decoder组成。本篇文献提出了transformer，是完全基于attention机制的。具备以下优势：训练时间更短，并行性更强，具备良好的泛化能力。 1 Introduction本文指出了现有的recurrent models和attention">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文笔记06：Attention Is All You Need">
+<meta property="og:url" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/index.html">
+<meta property="og:site_name" content="Leiouisacat">
+<meta property="og:description" content="Abstract主流的sequence transduction models都是基于复杂的RNN或者CNN做的，通常由一个encoder和一个decoder组成。本篇文献提出了transformer，是完全基于attention机制的。具备以下优势：训练时间更短，并行性更强，具备良好的泛化能力。 1 Introduction本文指出了现有的recurrent models和attention">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807083317616.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807084947173.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807085837365.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807113235396.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808174641988.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808175003522.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808210815807.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808210857757.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808213453563.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808230753207.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808231456424.png">
+<meta property="og:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808231550010.png">
+<meta property="article:published_time" content="2022-08-06T22:43:11.000Z">
+<meta property="article:modified_time" content="2022-08-08T15:16:36.588Z">
+<meta property="article:author" content="Leiouisacat">
+<meta property="article:tag" content="论文笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807083317616.png">
+
+
+<link rel="canonical" href="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/","path":"2022/08/07/论文笔记06/","title":"论文笔记06：Attention Is All You Need"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>论文笔记06：Attention Is All You Need | Leiouisacat</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Leiouisacat</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Introduction"><span class="nav-number">2.</span> <span class="nav-text">1 Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Background"><span class="nav-number">3.</span> <span class="nav-text">2 Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Model-Architecture"><span class="nav-number">4.</span> <span class="nav-text">3 Model Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Attention"><span class="nav-number">4.1.</span> <span class="nav-text">3.2 Attention</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-Scaled-Dot-Product-Attention"><span class="nav-number">4.1.1.</span> <span class="nav-text">3.2.1 Scaled Dot-Product Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-Multi-Head-Attention"><span class="nav-number">4.1.2.</span> <span class="nav-text">3.2.2 Multi-Head Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-Applications-of-Attention-in-our-Model"><span class="nav-number">4.1.3.</span> <span class="nav-text">3.2.3 Applications of Attention in our Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Position-wise-Feed-Forward-Networks"><span class="nav-number">4.2.</span> <span class="nav-text">3.3 Position-wise Feed-Forward Networks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Embeddings-and-Softmax"><span class="nav-number">4.3.</span> <span class="nav-text">3.4 Embeddings and Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Positional-Encoding"><span class="nav-number">4.4.</span> <span class="nav-text">3.5 Positional Encoding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Why-Self-Attention"><span class="nav-number">5.</span> <span class="nav-text">4 Why Self-Attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Training"><span class="nav-number">6.</span> <span class="nav-text">5 Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Result"><span class="nav-number">7.</span> <span class="nav-text">6 Result</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-Machine-Translation"><span class="nav-number">7.1.</span> <span class="nav-text">6.1 Machine Translation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-Model-Variations"><span class="nav-number">7.2.</span> <span class="nav-text">6.2 Model Variations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-English-Constituency-Parsing"><span class="nav-number">7.3.</span> <span class="nav-text">6.3 English Constituency Parsing</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leiouisacat"
+      src="/images/hp.jpeg">
+  <p class="site-author-name" itemprop="name">Leiouisacat</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leiouisacat" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leiouisacat" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leiouisacat@gmail.com" title="E-Mail → mailto:leiouisacat@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leiouisacat" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hp.jpeg">
+      <meta itemprop="name" content="Leiouisacat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="论文笔记06：Attention Is All You Need | Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文笔记06：Attention Is All You Need
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-08-07 06:43:11" itemprop="dateCreated datePublished" datetime="2022-08-07T06:43:11+08:00">2022-08-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-08-08 23:16:36" itemprop="dateModified" datetime="2022-08-08T23:16:36+08:00">2022-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807083317616.png" alt="image-20220807083317616" style="zoom:50%;">
+
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>主流的sequence transduction models都是基于复杂的RNN或者CNN做的，通常由一个encoder和一个decoder组成。本篇文献提出了transformer，是完全基于attention机制的。具备以下优势：<u>训练时间更短，并行性更强，具备良好的泛化能力</u>。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><p>本文指出了现有的recurrent models和attention mechanisms的不足，以证明transformer的必要性。</p>
+<p>Recurrent models的不足，<u>效率限制</u>。尽管已有一些方案通过factorization tricks和conditional computation，使RNN的计算效率有了显著提升。“The fundamental constraint of sequential computation, however, remains.”但是，这种架构对于序列计算的限制仍然存在。	</p>
+<p>Attention mechanism的不足，<u>依赖于和recurrent network的结合</u>。现有的attention mechanism都是内嵌到RNN内部的。</p>
+<p>提出transformer，<u>完全基于Attention mechanism</u>，不再依赖于RNN的架构。</p>
+<h2 id="2-Background"><a href="#2-Background" class="headerlink" title="2 Background"></a>2 Background</h2><p>这篇文章的背景介绍非常简洁。</p>
+<p>以reducing sequential computation为目标的网络及不足。Extended Neural GPU，ByteNet，ConvS2S，均采用CNN为基本组成模块，用于<u>并行计算</u>每一个输入和输出位置的hidden representations。但随着position之间距离的增加，需要进行的操作数快速增长(计算代价)，造成了学习长期依赖十分困难。Transformer很好地解决了该问题。</p>
+<p>Self-attention（intra-attention）。对于一个单一序列，self- attention将不同位置的信息联系起来，来综合计算这个序列的表示。</p>
+<p>End-to-end memory networks，基于recurrent attention mechanism。在 simple-language question answering 和 language modeling tasks上表现良好。</p>
+<p>总之，tranformer上第一个完全依赖于Attention mechanism的全新网络架构。</p>
+<h2 id="3-Model-Architecture"><a href="#3-Model-Architecture" class="headerlink" title="3 Model Architecture"></a>3 Model Architecture</h2><h3 id="3-2-Attention"><a href="#3-2-Attention" class="headerlink" title="3.2 Attention"></a>3.2 Attention</h3><p>“An attention function can be described as mapping a query and a set of key-value pairs to an output”</p>
+<p>主要思想：通过Q(query)和K(key)计算出weights，然后在V(value)上加权，组成输出结果。</p>
+<img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807084947173.png" alt="image-20220807084947173" style="zoom:50%;">
+
+<h4 id="3-2-1-Scaled-Dot-Product-Attention"><a href="#3-2-1-Scaled-Dot-Product-Attention" class="headerlink" title="3.2.1 Scaled Dot-Product Attention"></a>3.2.1 Scaled Dot-Product Attention</h4><img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807085837365.png" alt="image-20220807085837365" style="zoom:50%;">
+
+<p>输入为$d_v$ 维的values，$d_k$维的queries和keys组成。对query和所有的ke y做点积(dot product )，并除以$\sqrt{d_k}$，并用softmax获得value的权重。实际操作中，同时对一组queries应用attention操作，这一组queries被打包成一个Q矩阵。keys也被打包成一个K矩阵。</p>
+<p>最常用的两种attention function是：additive attention，dot-product (multi-plicative) attention。如下图所示(图片来源，李宏毅机器学习课程2022)。</p>
+<img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220807113235396.png" alt="image-20220807113235396" style="zoom:50%;">
+
+<p>dot-product (multi-plicative) attention和本文采用的attention机制相同，只是不用除以$\sqrt{d_k}$。additive attention则采用一个单层的前馈神经网络来进行计算。dot-product更快、空间利用率更高，因为可以使用优化得很好的矩阵相乘的代码。</p>
+<p>Why scaled dot-product?</p>
+<p>当$d_k$较小的时候，以上两种机制的效果相似。然而当$d_k$较大的时候，additive attention效果更好。<em>本文推测，在$d_k$较大的时候，dot-product增加的非常大，将softmax函数推向了边缘，导致梯度非常小</em>。为了消除这个影响，除以$\sqrt{d_k}$。</p>
+<h4 id="3-2-2-Multi-Head-Attention"><a href="#3-2-2-Multi-Head-Attention" class="headerlink" title="3.2.2 Multi-Head Attention"></a>3.2.2 Multi-Head Attention</h4><p>多头注意力机制。</p>
+<img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808174641988.png" alt="image-20220808174641988" style="zoom:50%;">
+
+<p>Multi-Head Attention可用如下公式表述：</p>
+<img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808175003522.png" alt="image-20220808175003522" style="zoom:50%;">
+
+<p>原来的keys，values，queries均为$d_{model}$维。采用线性变换，将keys，values，queries分别投影成$d_k$、$d_v$、$d_k$维的向量。对于每一组K、Q、V的组合，会并行执行$h$组attention function并进行拼接。最后再通过矩阵$W^o\in\R^{hd_v\times{d_{model}}}$映射为$d_{model}$维的向量。</p>
+<p>Q：为什么要引入多头注意力机制？</p>
+<p>原文中是这么说的，“Multi-head attention allows the model to jointly attend to information from different representation subspaces at <u>different positions</u>. With a single attention head, averaging inhibits this.”</p>
+<p>多头注意力机制可以拓展模型关注不同位置的能力。多头注意力机制，提供了多层表示空间，在transformer里面就有8组不同的权重矩阵。</p>
+<h4 id="3-2-3-Applications-of-Attention-in-our-Model"><a href="#3-2-3-Applications-of-Attention-in-our-Model" class="headerlink" title="3.2.3 Applications of Attention in our Model"></a>3.2.3 Applications of Attention in our Model</h4><h3 id="3-3-Position-wise-Feed-Forward-Networks"><a href="#3-3-Position-wise-Feed-Forward-Networks" class="headerlink" title="3.3 Position-wise Feed-Forward Networks"></a>3.3 Position-wise Feed-Forward Networks</h3><img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808210815807.png" alt="image-20220808210815807" style="zoom:50%;">
+
+<p>Transformer 里每一个block里面都会连接一个全连接层。由两个线性层和一个ReLU激励函数组成。是可以由如下公式表示的：</p>
+<img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808210857757.png" alt="image-20220808210857757" style="zoom:50%;">
+
+<h3 id="3-4-Embeddings-and-Softmax"><a href="#3-4-Embeddings-and-Softmax" class="headerlink" title="3.4 Embeddings and Softmax"></a>3.4 Embeddings and Softmax</h3><p>原文中有这样一段话，“ In our model, we share the same weight matrix between the two embedding layers and the pre-softmax linear transformation。”</p>
+<p>Q：transformer中是如何做权值共享的呢，为什么可以权值共享？</p>
+<p>以下回答参考自：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/132554155">https://zhuanlan.zhihu.com/p/132554155</a></p>
+<p>Transformer在两个地方进行了权重共享：</p>
+<p><strong>（1）</strong>Encoder和Decoder间的Embedding层权重共享；</p>
+<p><strong>（2）</strong>Decoder中Embedding层和FC层权重共享。</p>
+<p><strong>对于（1）</strong>，《Attention is all you need》中Transformer被应用在机器翻译任务中，源语言和目标语言是不一样的，但它们可以共用一张大词表，对于两种语言中共同出现的词（比如：数字，标点等等）可以得到更好的表示，而且对于Encoder和Decoder，<strong>嵌入时都只有对应语言的embedding会被激活</strong>，因此是可以共用一张词表做权重共享的。</p>
+<p>论文中，Transformer词表用了bpe来处理，所以最小的单元是subword。英语和德语同属日耳曼语族，有很多相同的subword，可以共享类似的语义。而像中英这样相差较大的语系，语义共享作用可能不会很大。</p>
+<p>但是，共用词表会使得词表数量增大，增加softmax的计算时间，因此实际使用中是否共享可能要根据情况权衡。</p>
+<p>该点参考：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/333419099/answer/743341017">https://www.zhihu.com/question/333419099/answer/743341017</a></p>
+<p><strong>对于（2）</strong>，Embedding层可以说是通过onehot去取到对应的embedding向量，FC层可以说是相反的，通过向量（定义为 x）去得到它可能是某个词的softmax概率，取概率最大（贪婪情况下）的作为预测值。</p>
+<p>那哪一个会是概率最大的呢？在FC层的每一行量级相同的前提下，理论上和 x 相同的那一行对应的点积和softmax概率会是最大的（可类比本文问题1）。</p>
+<p>因此，Embedding层和FC层权重共享，Embedding层中和向量 x 最接近的那一行对应的词，会获得更大的预测概率。实际上，Decoder中的<strong>Embedding层和FC层有点像互为逆过程</strong>。</p>
+<p>通过这样的权重共享可以减少参数的数量，加快收敛。</p>
+<h3 id="3-5-Positional-Encoding"><a href="#3-5-Positional-Encoding" class="headerlink" title="3.5 Positional Encoding"></a>3.5 Positional Encoding</h3><img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808213453563.png" alt="image-20220808213453563" style="zoom:50%;">
+
+<h2 id="4-Why-Self-Attention"><a href="#4-Why-Self-Attention" class="headerlink" title="4 Why Self-Attention"></a>4 Why Self-Attention</h2><h2 id="5-Training"><a href="#5-Training" class="headerlink" title="5 Training"></a>5 Training</h2><p>数据集：</p>
+<p>standard WMT 2014 English-German dataset，共计4.5 million个sentences pairs</p>
+<p>WMT 2014 English-French dataset</p>
+<p>Sentences采用bpe(byte-pair encoding)方式处理。</p>
+<p>Q：何为BPE？</p>
+<p>以下回答参考自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/bf96163/article/details/105967287">https://blog.csdn.net/bf96163/article/details/105967287</a></p>
+<p>Transformer NLP 预训练模型都通过 embedding 词典来表征词义，<br>当遇见没见过的词的时候以前是用”&lt; u nk&gt;”代替，这样会造成对新事物(新词、网络词、简写词)理解能力很差，BPE就是来解决这个问题的。<br>英文中会有词根和造词现象</p>
+<p>例如: “greenhand” 如果你的词典中没有这个词，那么就可以把它拆成 “green”,“hand”两个词，这里green向量 会跟发芽一类的词相近有新生的意思hand有操作手的意思那么就不难推测出greenhand是新手。<br>这个过程中会参考一个词典，这个词典从上往下是一个个词对，对应的顺序就是它出现的频率 越往上的词越高频率。对应中文相当于分词。</p>
+<p>Q: 何为label smoothing ?</p>
+<h2 id="6-Result"><a href="#6-Result" class="headerlink" title="6 Result"></a>6 Result</h2><h3 id="6-1-Machine-Translation"><a href="#6-1-Machine-Translation" class="headerlink" title="6.1 Machine Translation"></a>6.1 Machine Translation</h3><img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808230753207.png" alt="image-20220808230753207" style="zoom:50%;">
+
+<p>可以看到，在机器翻译任务上，transformer无论是在翻译准确性上还是在Training Cost上均做到了领先。</p>
+<h3 id="6-2-Model-Variations"><a href="#6-2-Model-Variations" class="headerlink" title="6.2 Model Variations"></a>6.2 Model Variations</h3><img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808231456424.png" alt="image-20220808231456424" style="zoom:50%;">
+
+<p>该部分的实验，主要是基于一个base model，调整模型的各类参数，最终来研究模型的不同表现。</p>
+<h3 id="6-3-English-Constituency-Parsing"><a href="#6-3-English-Constituency-Parsing" class="headerlink" title="6.3 English Constituency Parsing"></a>6.3 English Constituency Parsing</h3><img src="/2022/08/07/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B006/image-20220808231550010.png" alt="image-20220808231550010" style="zoom:50%;">
+
+<p>该部分主要考量了transformer的泛化性能。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"># 论文笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02022HW1/" rel="prev" title="李宏毅机器学习2022HW1">
+                  <i class="fa fa-chevron-left"></i> 李宏毅机器学习2022HW1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/08/2022%E5%B9%B4%E5%A4%8F%E5%AD%A3%E7%9A%84%E9%81%90%E6%80%9D/" rel="next" title="2022年夏季的遐思">
+                  2022年夏季的遐思 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leiouisacat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

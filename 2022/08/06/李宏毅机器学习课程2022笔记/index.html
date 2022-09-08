@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="[TOC] 第一节 机器学习的相关规定1.1 什么是machine learningMachine Learning 即探究模拟自然界本质的函数。 帮助人类找复杂的函数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="李宏毅机器学习课程2022笔记">
+<meta property="og:url" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Leiouisacat">
+<meta property="og:description" content="[TOC] 第一节 机器学习的相关规定1.1 什么是machine learningMachine Learning 即探究模拟自然界本质的函数。 帮助人类找复杂的函数。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180652113.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180717162.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180733537.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180748183.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180821597.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180832384.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180845107.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180859732.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180909559.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180920923.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180930519.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180943965.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180954039.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181002246.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181016071.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181027234.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181036079.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181046118.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181059648.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181113452.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181124570.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181138428.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181148195.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181158345.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181210302.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181221447.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181233968.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181243365.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181252351.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181300531.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181311145.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181319475.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181333083.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181340821.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810104732658.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810104846958.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810104939522.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105237568.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105326220.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105621245.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105740574.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810143548401.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810143709652.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144113631.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144211246.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144407815.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144706443.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144911495.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145051046.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145120793.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145258694.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145640099.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145955718.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150614740.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150343894.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150435304.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150710781.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810152907346.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810155807310.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810155834225.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810160629197.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161231816.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161427060.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161742435.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161917136.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162110988.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162232340.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162548088.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162813142.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810163013670.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821162649269.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821162926544.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163334380.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163523241.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163546233.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163751778.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821164419706.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821164432201.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821164955987.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821183221054.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821183303146.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821183958787.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821184608057.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821184631588.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190108237.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190202712.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190348476.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190523540.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821191127347.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821192933337.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193234480.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193456811.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193830138.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193930794.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195033439.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195144999.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195326000.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195538540.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831212808764.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831212917745.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831213225337.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831213849699.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831213903383.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904094945886.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095303117.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095353869.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095745500.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095832238.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904100706019.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904101020622.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904101544932.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904101646855.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104113767.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104354204.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104553327.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104840319.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904135700789.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904135833576.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904141141750.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904141248416.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142100944.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142138034.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142239216.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142349826.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142446339.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142711956.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904164507011.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904164734972.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904164906003.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165001774.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165144371.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165428282.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165636069.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165959165.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904170227387.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904170603319.png">
+<meta property="og:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904171103851.png">
+<meta property="article:published_time" content="2022-08-06T09:59:07.000Z">
+<meta property="article:modified_time" content="2022-09-08T03:50:33.821Z">
+<meta property="article:author" content="Leiouisacat">
+<meta property="article:tag" content="课程笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180652113.png">
+
+
+<link rel="canonical" href="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/","path":"2022/08/06/李宏毅机器学习课程2022笔记/","title":"李宏毅机器学习课程2022笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>李宏毅机器学习课程2022笔记 | Leiouisacat</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Leiouisacat</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E7%9B%B8%E5%85%B3%E8%A7%84%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">第一节 机器学习的相关规定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AFmachine-learning"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 什么是machine learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-maching-learning%E7%9A%84%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 maching learning的输入和输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-supervise-learning"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 supervise learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-self-supervised-learning"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 self-supervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Genrative-Adaversarial-Network"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 Genrative Adaversarial Network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Reinforcement-learning"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 Reinforcement learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E8%BF%9B%E9%98%B6%E8%AF%BE%E9%A2%98"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 进阶课题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-1-%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B"><span class="nav-number">1.7.1.</span> <span class="nav-text">1.7.1 异常检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-2-Explainable-AI"><span class="nav-number">1.7.2.</span> <span class="nav-text">1.7.2 Explainable AI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-3-Model-Attack"><span class="nav-number">1.7.3.</span> <span class="nav-text">1.7.3 Model Attack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-4-Domain-Adaptation"><span class="nav-number">1.7.4.</span> <span class="nav-text">1.7.4 Domain Adaptation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-5-Network-Copression"><span class="nav-number">1.7.5.</span> <span class="nav-text">1.7.5 Network Copression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-6-Life-long-Learning"><span class="nav-number">1.7.6.</span> <span class="nav-text">1.7.6 Life-long Learning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-7-Meta-leaning"><span class="nav-number">1.7.7.</span> <span class="nav-text">1.7.7 Meta leaning</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%8F%8A%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">第二节 深度学习基础概念及优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8A%82-CNN"><span class="nav-number">3.</span> <span class="nav-text">第三节 CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-why-cnn"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 why cnn</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-neuron-version%EF%BC%9A%E6%9D%A5%E8%87%AAfully-connoted-layer%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.2.1 neuron version：来自fully connoted layer的改进</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-filter-version-%EF%BC%9Aconvolution-%E8%A7%86%E8%A7%92"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.2.2 filter version ：convolution 视角</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%85%B3%E4%BA%8Epooling"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 关于pooling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-The-whole-CNN"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 The whole CNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E9%B1%BC%E4%B8%8E%E7%86%8A%E6%8E%8C%E5%8F%AF%E4%BB%A5%E5%85%BC%E5%BE%97%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 鱼与熊掌可以兼得的机器学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Spatial-Transformer"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 Spatial Transformer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-HW3"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 HW3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E8%8A%82-%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6-self-attention"><span class="nav-number">4.</span> <span class="nav-text">第四节 自注意力机制(self-attention)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E8%BE%93%E5%85%A5%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 输入的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E8%BE%93%E5%87%BA%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 输出的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-Sequence-Labeling"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 Sequence Labeling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-self-attention"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 self attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-multi-head-attention"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 multi head attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-Positional-Encoding"><span class="nav-number">4.6.</span> <span class="nav-text">4.6 Positional Encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-Application"><span class="nav-number">4.7.</span> <span class="nav-text">4.7 Application</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-7-1-Truncated-self-attention"><span class="nav-number">4.7.1.</span> <span class="nav-text">4.7.1 Truncated self-attention</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-2-self-attention-v-s-RNN-amp-CNN"><span class="nav-number">4.8.</span> <span class="nav-text">4.7.2 self attention v.s. RNN &amp; CNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-3-self-attention-for-Graph"><span class="nav-number">4.9.</span> <span class="nav-text">4.7.3 self attention for Graph</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85-Recurrent-Neural-Network"><span class="nav-number">5.</span> <span class="nav-text">(补充)Recurrent Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E6%9C%B4%E7%B4%A0%E7%9A%84RNN"><span class="nav-number">5.1.</span> <span class="nav-text">最朴素的RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM"><span class="nav-number">5.2.</span> <span class="nav-text">LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN%E7%9A%84%E6%9B%B4%E5%A4%9A%E5%BA%94%E7%94%A8"><span class="nav-number">5.3.</span> <span class="nav-text">RNN的更多应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E8%A1%A5%E5%85%85%EF%BC%89Graph-Neural-Network"><span class="nav-number">6.</span> <span class="nav-text">（补充）Graph Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GNN%EF%BC%9Awhy"><span class="nav-number">6.1.</span> <span class="nav-text">GNN：why</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolution"><span class="nav-number">6.2.</span> <span class="nav-text">Convolution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spatial-based-GNN"><span class="nav-number">6.3.</span> <span class="nav-text">Spatial based GNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spectral-Based-Convolution"><span class="nav-number">6.4.</span> <span class="nav-text">Spectral-Based Convolution</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85-Unsupervised-Learning-Word-Embedding"><span class="nav-number">7.</span> <span class="nav-text">(补充) Unsupervised Learning: Word Embedding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E8%8A%82-%E7%94%9F%E6%88%90%E5%BC%8F%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C"><span class="nav-number">8.</span> <span class="nav-text">第六节 生成式对抗网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Generator"><span class="nav-number">8.1.</span> <span class="nav-text">6.1 为什么需要Generator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-GAN"><span class="nav-number">8.2.</span> <span class="nav-text">6.2 GAN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-Theory-behind-GAN"><span class="nav-number">8.3.</span> <span class="nav-text">6.3 Theory behind GAN</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leiouisacat"
+      src="/images/hp.jpeg">
+  <p class="site-author-name" itemprop="name">Leiouisacat</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leiouisacat" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leiouisacat" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leiouisacat@gmail.com" title="E-Mail → mailto:leiouisacat@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leiouisacat" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hp.jpeg">
+      <meta itemprop="name" content="Leiouisacat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="李宏毅机器学习课程2022笔记 | Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          李宏毅机器学习课程2022笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-08-06 17:59:07" itemprop="dateCreated datePublished" datetime="2022-08-06T17:59:07+08:00">2022-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-09-08 11:50:33" itemprop="dateModified" datetime="2022-09-08T11:50:33+08:00">2022-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>[TOC]</p>
+<h2 id="第一节-机器学习的相关规定"><a href="#第一节-机器学习的相关规定" class="headerlink" title="第一节 机器学习的相关规定"></a>第一节 机器学习的相关规定</h2><h3 id="1-1-什么是machine-learning"><a href="#1-1-什么是machine-learning" class="headerlink" title="1.1 什么是machine learning"></a>1.1 什么是machine learning</h3><p>Machine Learning 即探究模拟自然界本质的函数。</p>
+<p>帮助人类找复杂的函数。</p>
+<p>深度学习，就是使用类神经网络来模拟复杂的函数。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180652113.png" alt="image-20220806180652113" style="zoom:50%;">
+
+<h3 id="1-2-maching-learning的输入和输出"><a href="#1-2-maching-learning的输入和输出" class="headerlink" title="1.2 maching learning的输入和输出"></a>1.2 maching learning的输入和输出</h3><p>函数的输入是各式各样的，包括向量、矩阵、序列等等。</p>
+<p>也有各式各样的输出，包括数值（所谓的回归问题）、分类、生成一段话等等，包括绘制一整张图片。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180717162.png" alt="image-20220806180717162" style="zoom:50%;">
+
+
+
+<h3 id="1-3-supervise-learning"><a href="#1-3-supervise-learning" class="headerlink" title="1.3 supervise learning"></a>1.3 supervise learning</h3><p>收集很多的训练资料，并标记对应的标签（label）。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180733537.png" alt="image-20220806180733537" style="zoom:50%;">
+
+
+
+<h3 id="1-4-self-supervised-learning"><a href="#1-4-self-supervised-learning" class="headerlink" title="1.4 self-supervised learning"></a>1.4 self-supervised learning</h3><p>但是收集足够多的标记资料是很麻烦的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180748183.png" alt="image-20220806180748183" style="zoom:50%;">
+
+<p>在训练之前，让模型提前练好一些基本功（pre train），然后在新的任务上期待有更好的表现。在pre train的时候不需要任何标注。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180821597.png" alt="image-20220806180821597" style="zoom:50%;">
+
+<p>让机器分辨左右翻转的照片是不是同一张照片，等简单的任务。在完成这些简单的任务之后，在下游任务(down stream task)就会有较好的表现。</p>
+<p>Pre trainde model 又被叫做 Foundation Model</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180832384.png" alt="image-20220806180832384" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180845107.png" alt="image-20220806180845107" style="zoom:50%;">
+
+<h3 id="1-5-Genrative-Adaversarial-Network"><a href="#1-5-Genrative-Adaversarial-Network" class="headerlink" title="1.5 Genrative Adaversarial Network"></a>1.5 Genrative Adaversarial Network</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180859732.png" alt="image-20220806180859732" style="zoom:50%;">
+
+<h3 id="1-6-Reinforcement-learning"><a href="#1-6-Reinforcement-learning" class="headerlink" title="1.6 Reinforcement learning"></a>1.6 Reinforcement learning</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180909559.png" alt="image-20220806180909559" style="zoom:50%;">
+
+<p>互动式。人类自己也不知道最好的决策是什么的时候，就需要用到强化学习的技术。</p>
+<h3 id="1-7-进阶课题"><a href="#1-7-进阶课题" class="headerlink" title="1.7 进阶课题"></a>1.7 进阶课题</h3><h4 id="1-7-1-异常检测"><a href="#1-7-1-异常检测" class="headerlink" title="1.7.1 异常检测"></a>1.7.1 异常检测</h4><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180920923.png" alt="image-20220806180920923" style="zoom:50%;">
+
+<p>让机器具备回答，“我不知道”的能力。</p>
+<h4 id="1-7-2-Explainable-AI"><a href="#1-7-2-Explainable-AI" class="headerlink" title="1.7.2 Explainable AI"></a>1.7.2 Explainable AI</h4><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180930519.png" alt="image-20220806180930519" style="zoom:50%;">
+
+<p>需要机器回答，为什么会这样决策。</p>
+<p>比如，给出一张图片，让机器表示出它觉得重要的标识地位。</p>
+<h4 id="1-7-3-Model-Attack"><a href="#1-7-3-Model-Attack" class="headerlink" title="1.7.3 Model Attack"></a>1.7.3 Model Attack</h4><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180943965.png" alt="image-20220806180943965" style="zoom:50%;">
+
+<p>在图片中加入了细微的不同，猫被机器断定为海星。可以了解到什么样的对机器攻击的技术。</p>
+<h4 id="1-7-4-Domain-Adaptation"><a href="#1-7-4-Domain-Adaptation" class="headerlink" title="1.7.4 Domain Adaptation"></a>1.7.4 Domain Adaptation</h4><p>训练资料是黑白的时候，测试资料是彩色的。机器的正确率就会忽然暴跌。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806180954039.png" alt="image-20220806180954039" style="zoom:50%;">
+
+<h4 id="1-7-5-Network-Copression"><a href="#1-7-5-Network-Copression" class="headerlink" title="1.7.5 Network Copression"></a>1.7.5 Network Copression</h4><p>让巨大的模型变小。</p>
+<h4 id="1-7-6-Life-long-Learning"><a href="#1-7-6-Life-long-Learning" class="headerlink" title="1.7.6 Life-long Learning"></a>1.7.6 Life-long Learning</h4><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181002246.png" alt="image-20220806181002246" style="zoom:50%;">
+
+<p>让一个机器不断学习新的技术？</p>
+<h4 id="1-7-7-Meta-leaning"><a href="#1-7-7-Meta-leaning" class="headerlink" title="1.7.7 Meta leaning"></a>1.7.7 Meta leaning</h4><p>让机器学会如何学习。</p>
+<p>Few-shot leaning，用非常少的数据集进行训练。</p>
+<h2 id="第二节-深度学习基础概念及优化"><a href="#第二节-深度学习基础概念及优化" class="headerlink" title="第二节 深度学习基础概念及优化"></a>第二节 深度学习基础概念及优化</h2><p>Machine Learning &#x3D; Looking for Function</p>
+<p>让机器具备寻找函数的能力。</p>
+<p>这里就先略过。</p>
+<h2 id="第三节-CNN"><a href="#第三节-CNN" class="headerlink" title="第三节 CNN"></a>第三节 CNN</h2><p>Image classification </p>
+<h3 id="3-1-why-cnn"><a href="#3-1-why-cnn" class="headerlink" title="3.1 why cnn"></a>3.1 why cnn</h3><h4 id="3-2-1-neuron-version：来自fully-connoted-layer的改进"><a href="#3-2-1-neuron-version：来自fully-connoted-layer的改进" class="headerlink" title="3.2.1 neuron version：来自fully connoted layer的改进"></a>3.2.1 neuron version：来自fully connoted layer的改进</h4><p>把所有的种类映射成one-hot向量。维度决定了模型决定的种类的数量。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181016071.png" alt="image-20220806181016071" style="zoom:50%;">
+
+<p>计算机视角下的图片，是一个三维的tensor。length, width, channel</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181027234.png" alt="image-20220806181027234" style="zoom:50%;">
+
+<p>原始的想法是把这样三维的tensor进行拉直。变成一个巨长的向量，作为神经网络的输入。这会导致非常之多的参数，overfitting的风险增加了。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181036079.png" alt="image-20220806181036079" style="zoom:50%;">
+
+<p>也许不需要每一个neuron都去看一张完整的图片。未必需要fully connected。有时候只需要观察图片的一小部分就足够了。所谓感受野。Recptive filed。由此可以给出第一个简化。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181046118.png" alt="image-20220806181046118" style="zoom:50%;">
+
+<p>receptive filed是可以任意设计的。可以参考最经典的receptive field的设计方案。</p>
+<p>receptive filed超过了图像边界：padding，进行补0即可。</p>
+<p>我们让一些neuro共享参数。Parameter sharing: 让两个neuro的weight保持是完全一样的。会不会输出完全一致？不会，因为他们的输入是不一样的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181059648.png" alt="image-20220806181059648" style="zoom:50%;">
+
+<p>参见的共享参数的方法。也就是每一个filter共享一组参数。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181113452.png" alt="image-20220806181113452" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181124570.png" alt="image-20220806181124570" style="zoom:50%;">
+
+<p>model bias 大不一定是坏事，可以避免overfitting。</p>
+<h4 id="3-2-2-filter-version-：convolution-视角"><a href="#3-2-2-filter-version-：convolution-视角" class="headerlink" title="3.2.2 filter version ：convolution 视角"></a>3.2.2 filter version ：convolution 视角</h4><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181138428.png" alt="image-20220806181138428" style="zoom:50%;">
+
+<p>卷积后产生的feature map可以看成一个新的图像，只不过channel数量是64。</p>
+<p>那么第二层可以继续进行卷积。第二层的filter的高度同样需要调整为64</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181148195.png" alt="image-20220806181148195" style="zoom:50%;">
+
+<p>每一层的卷积，都是对原来对图像的高度观察。<strong>network叠的越深，那么同样大小的卷积核检测到的范围也就越大。</strong></p>
+<p>每一组共用的参数就是filter。</p>
+<h3 id="3-2-关于pooling"><a href="#3-2-关于pooling" class="headerlink" title="3.2 关于pooling"></a>3.2 关于pooling</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181158345.png" alt="image-20220806181158345" style="zoom:50%;">
+
+<p>pooling内部是没有weight的，没有要learn的东西。<strong>pooling可以将图像变小。目的是为了减小计算损耗。</strong>因而pooling并不是一个无脑添加的东西，是需要根据具体的网络应用情况来决定的。</p>
+<p>如Max pooling，选择最大的那个数为一个范围内数的代表。多大的范围完全自己决定。但对于细粒度的检测，可能会带来损害。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181210302.png" alt="image-20220806181210302" style="zoom:50%;">
+
+<h3 id="3-3-The-whole-CNN"><a href="#3-3-The-whole-CNN" class="headerlink" title="3.3 The whole CNN"></a>3.3 The whole CNN</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181221447.png" alt="image-20220806181221447" style="zoom:50%;">
+
+<p>常见的CNN架构就如上图所示了。</p>
+<p>pooling未必就是好的，具体问题具体分析。</p>
+<p>CNN对于内在的图片性质，旋转、放大之后，就是无法区别，非常的笨。就是需要做data augumentation的原因。</p>
+<p>可以考虑<strong>Spatial transformer layer</strong>，具体见第2.5节笔记。</p>
+<h3 id="3-4-鱼与熊掌可以兼得的机器学习"><a href="#3-4-鱼与熊掌可以兼得的机器学习" class="headerlink" title="3.4 鱼与熊掌可以兼得的机器学习"></a>3.4 鱼与熊掌可以兼得的机器学习</h3><p>深度学习到底好在哪里。</p>
+<p>当模型选择较大的时候，坏处是理想和现实差距比较大。</p>
+<p>当模型选择比较小的时候，好处是理想和现实差距比较小。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181233968.png" alt="image-20220806181233968" style="zoom:50%;">
+
+<p>那么是否有鱼与熊掌兼得的情况呢？</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181243365.png" alt="image-20220806181243365" style="zoom:50%;">
+
+<h3 id="3-5-Spatial-Transformer"><a href="#3-5-Spatial-Transformer" class="headerlink" title="3.5 Spatial Transformer"></a>3.5 Spatial Transformer</h3><p><strong>CNN is not invariant to scaling and rotation</strong></p>
+<p>CNN无法确认旋转、缩放之后的图像。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181252351.png" alt="image-20220806181252351" style="zoom:50%;">
+
+<p> 进行picture的transformer的方法如下图所示。<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181300531.png" alt="image-20220806181300531" style="zoom:50%;"></p>
+<p>相关与下一层的每一个元素，都是前面一张图片的所有元素加权获得。</p>
+<p>矩阵视角下，图像<strong>缩放与平移</strong>的操作方式。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181311145.png" alt="image-20220806181311145" style="zoom:50%;">
+
+<p><strong>旋转操作</strong>。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181319475.png" alt="image-20220806181319475" style="zoom:50%;">
+
+<p>只需要6个参数，就可以将一张图片变成另一张图片。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181333083.png" alt="image-20220806181333083" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220806181340821.png" alt="image-20220806181340821" style="zoom:50%;">
+
+ 
+
+<h3 id="3-6-HW3"><a href="#3-6-HW3" class="headerlink" title="3.6 HW3"></a>3.6 HW3</h3><p>考虑尝试mixup这种数据增强。</p>
+<p>test time augmentation </p>
+<h2 id="第四节-自注意力机制-self-attention"><a href="#第四节-自注意力机制-self-attention" class="headerlink" title="第四节 自注意力机制(self-attention)"></a>第四节 自注意力机制(self-attention)</h2><p>Self attention解决了什么问题？</p>
+<h3 id="4-1-输入的类型"><a href="#4-1-输入的类型" class="headerlink" title="4.1 输入的类型"></a>4.1 输入的类型</h3><p>输入是一排向量，且输入的向量个数是不确定的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810104732658.png" alt="image-20220810104732658" style="zoom:50%;">
+
+<p>经典的描述就是，每一个句子的长度都不一样。</p>
+<p>句子里面的每一个词汇，可以用one-hot的方式，表示成向量。假设的前提是，各个词汇之间没有关系。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810104846958.png" alt="image-20220810104846958" style="zoom:50%;">
+
+<p>另外一种方法是word embedding。就是将每一个word映射到对应的向量空间里面去。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810104939522.png" alt="image-20220810104939522" style="zoom:50%;">
+
+<p>(古圣先贤帮你调好了)</p>
+<p>图，同样是一组向量。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105237568.png" alt="image-20220810105237568" style="zoom:50%;">
+
+<p>分子结构同样可以表示为图的结构。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105326220.png" alt="image-20220810105326220" style="zoom:50%;">
+
+<h3 id="4-2-输出的类型"><a href="#4-2-输出的类型" class="headerlink" title="4.2 输出的类型"></a>4.2 输出的类型</h3><p>第一种输出，就是输入和输出是等量的。又叫做Sequence Labeling。</p>
+<p>POS tagging：词性标注</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105621245.png" alt="image-20220810105621245" style="zoom:50%;">
+
+<p>第二种可能输出，输出只有一个label。如对于一段评价是正面还是积极的。根据一段语音，判断是谁说的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810105740574.png" alt="image-20220810105740574" style="zoom:50%;">
+
+<p>第三种可能输出，不知道要输出多少个label，由机器自己决定。seq to seq。像机器翻译任务等等。</p>
+<h3 id="4-3-Sequence-Labeling"><a href="#4-3-Sequence-Labeling" class="headerlink" title="4.3 Sequence Labeling"></a>4.3 Sequence Labeling</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810143548401.png" alt="image-20220810143548401" style="zoom:50%;">
+
+<p>如果如上图使用fully connected network，最大的缺陷是，<u>无法注意到上下文的关联。</u></p>
+<p>但是可以使用FC交叉构建。给FC考虑<u>一个window</u>的向量来综合考虑。</p>
+<p>如果开一个很大的window可以覆盖整个sequence？</p>
+<p><u>运算量会很大，还有很可能over fitting。</u></p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810143709652.png" alt="image-20220810143709652" style="zoom:50%;">
+
+<p>由此提出了self attention的概念。</p>
+<h3 id="4-4-self-attention"><a href="#4-4-self-attention" class="headerlink" title="4.4 self attention"></a>4.4 self attention</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144113631.png" alt="image-20220810144113631" style="zoom:50%;">
+
+<p>每次<u>都会考虑完整的序列</u>。然后再连接到FC。再决定输出。</p>
+<p>同样，self attention也是可以叠加的。和FC进行交替使用。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144211246.png" alt="image-20220810144211246" style="zoom:50%;">
+
+<p>self attention 的输入。会考虑一整个完整的序列。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144407815.png" alt="image-20220810144407815" style="zoom:50%;">
+
+<p>会根据$a^{1}$,来找出整个序列中的向量哪些是决定$a^{1}$输出是重要的，就是判断$a^{1}$和其他向量的相关性。得到$b^{1}$。</p>
+<p>如何计算这个相关性$\alpha$?</p>
+<p><u>有Dot-product和Additive两种策略</u>。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144706443.png" alt="image-20220810144706443" style="zoom:50%;">
+
+<p>计算attention score。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810144911495.png" alt="image-20220810144911495" style="zoom:50%;">
+
+<p>但是在实际操作中，$a^{1}$也需要和自己计算关联性。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145051046.png" alt="image-20220810145051046" style="zoom:50%;">
+
+<p>再进行一个softmax。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145120793.png" alt="image-20220810145120793" style="zoom:50%;">
+
+<p>在获得以上的关联性之后，再进行抽取关键的信息。进行加权求和。获得了$a^1$对应的$b^1$。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145258694.png" alt="image-20220810145258694" style="zoom:50%;">
+
+<p>同理，$b^2$采用如下图所示的方法进行计算。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145640099.png" alt="image-20220810145640099" style="zoom:50%;">
+
+<p>实际上，每一个a，都需要产生q、k、v。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810145955718.png" alt="image-20220810145955718" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150614740.png" alt="image-20220810150614740" style="zoom:50%;">
+
+<p>可以合并成矩阵相乘的形式。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150343894.png" alt="image-20220810150343894" style="zoom:50%;">
+
+<p>可以再加一个softmax</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150435304.png" alt="image-20220810150435304" style="zoom:50%;">
+
+<p>最后再左乘一个V矩阵。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810150710781.png" alt="image-20220810150710781" style="zoom:50%;">
+
+<p>以上的步骤可以概括为下图。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810152907346.png" alt="image-20220810152907346" style="zoom:50%;">
+
+<p>其中只有$W^q$、$W^k$、$W^v$是需要学习的参数。</p>
+<h3 id="4-5-multi-head-attention"><a href="#4-5-multi-head-attention" class="headerlink" title="4.5 multi head attention"></a>4.5 multi head attention</h3><p>相关的定义可能有很多种。通过<u>多头机制来定义不同的相关性</u>。</p>
+<p>&#x3D;&#x3D;本质上就是多了几组$W^q$、$W^k$、$W^v$以供学习。&#x3D;&#x3D;</p>
+<p>其中一个head。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810155807310.png" alt="image-20220810155807310" style="zoom:50%;">
+
+<p>另一个head采用的是完全相同的操作。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810155834225.png" alt="image-20220810155834225" style="zoom:50%;">
+
+<h3 id="4-6-Positional-Encoding"><a href="#4-6-Positional-Encoding" class="headerlink" title="4.6 Positional Encoding"></a>4.6 Positional Encoding</h3><p>上述的操作中，对所有的向量的操作都是一样的，并没有包含位置的信息。</p>
+<p><u>考虑添加位置信息</u>。</p>
+<p>每一个不同的位置，都会产生一个独特的向量，$e^i$。只需要简单加上就可以了。</p>
+<p>这种不同完全可以交给机器学习。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810160629197.png" alt="image-20220810160629197" style="zoom:50%;">
+
+<p>产生位置向量会有很多方法。尚待研究的问题。</p>
+<h3 id="4-7-Application"><a href="#4-7-Application" class="headerlink" title="4.7 Application"></a>4.7 Application</h3><h4 id="4-7-1-Truncated-self-attention"><a href="#4-7-1-Truncated-self-attention" class="headerlink" title="4.7.1 Truncated self-attention"></a>4.7.1 Truncated self-attention</h4><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161231816.png" alt="image-20220810161231816" style="zoom:50%;">
+
+<p>当做语音辨识的时候，因为序列长度太长。会带来巨大的计算量。</p>
+<p>因而可以考虑只对一定范围内的序列进行attention。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161427060.png" alt="image-20220810161427060" style="zoom:50%;">
+
+<h3 id="4-7-2-self-attention-v-s-RNN-amp-CNN"><a href="#4-7-2-self-attention-v-s-RNN-amp-CNN" class="headerlink" title="4.7.2 self attention v.s. RNN &amp; CNN"></a>4.7.2 self attention v.s. RNN &amp; CNN</h3><p>图片同样可以看成是向量的集合。可以把每一个位置的pixel看成一个三维的向量。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161742435.png" alt="image-20220810161742435" style="zoom:50%;">
+
+<p><u>self attention v.s. CNN</u></p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810161917136.png" alt="image-20220810161917136" style="zoom:50%;">
+
+<p>CNN是简化版本的self attention。</p>
+<p>Self attention可以看成是一个可以自己学习receptive field的CNN。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162110988.png" alt="image-20220810162110988" style="zoom:50%;">
+
+<p>更加flexible的model需要更多的数据量。</p>
+<p>self attention更加灵活，因而需要更多的数据量。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162232340.png" alt="image-20220810162232340" style="zoom:50%;">
+
+<p><u>RNN v.s self attention</u></p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162548088.png" alt="image-20220810162548088" style="zoom:50%;">
+
+<p>对于距离很远的依赖，self attention更有优势。因为是直接计算的。</p>
+<p>此外，self attention是可以支持并行化处理的。运行速度上更快。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810162813142.png" alt="image-20220810162813142" style="zoom:50%;">
+
+<h3 id="4-7-3-self-attention-for-Graph"><a href="#4-7-3-self-attention-for-Graph" class="headerlink" title="4.7.3 self attention for Graph"></a>4.7.3 self attention for Graph</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220810163013670.png" alt="image-20220810163013670" style="zoom:50%;">
+
+<p>只需要计算有相连边的点之间的attention score，以简化计算量。</p>
+<p>其实就是一种GNN。</p>
+<p>我想我还是把全部的课程从头到尾快速过一遍，然后再来做实验会比较好一些。</p>
+<h2 id="补充-Recurrent-Neural-Network"><a href="#补充-Recurrent-Neural-Network" class="headerlink" title="(补充)Recurrent Neural Network"></a>(补充)Recurrent Neural Network</h2><h3 id="最朴素的RNN"><a href="#最朴素的RNN" class="headerlink" title="最朴素的RNN"></a>最朴素的RNN</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821162649269.png" alt="image-20220821162649269" style="zoom:50%;">
+
+<p>将词汇表示成一个vector。</p>
+<p>因为需要考虑上下文，从而引入了RNN。希望neural network是具备记忆力的。每一层产生的output都会被输出到memory中去。下次在计算输出的时候，又会考虑到memory的状态。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821162926544.png" alt="image-20220821162926544" style="zoom:50%;">
+
+<p>需要给定memory一个初始值。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163334380.png" alt="image-20220821163334380" style="zoom:50%;">
+
+<p>注意上面是同一个network。但是这种RNN只能考虑到一个方向。</p>
+<p>当然，可以设计成deep的形式。多个hidden layer。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163523241.png" alt="image-20220821163523241" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163546233.png" alt="image-20220821163546233" style="zoom:50%;">
+
+<p>Elman存储的是中间值，Jordan Network存储的是输出。</p>
+<p>可以建立双向的RNN。将正反两个方向的隐藏状态联合到一起考虑。即考虑了从句首到句尾，也考虑了从句尾到句首。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821163751778.png" alt="image-20220821163751778" style="zoom:50%;">
+
+<h3 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h3><p>Long Short-term Memory</p>
+<p>输入门和输出门，以及遗忘门是交给NN自己去学习的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821164419706.png" alt="image-20220821164419706" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821164432201.png" alt="image-20220821164432201" style="zoom:50%;">
+
+<p>三个门加上输入，一共可以看成4个输入信号。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821164955987.png" alt="image-20220821164955987" style="zoom:50%;">
+
+<p>任何复杂和晦涩的问题，都可以尝试使用举例子的方式说明清楚。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821183221054.png" alt="image-20220821183221054" style="zoom:50%;">
+
+<p>实际举例子来看。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821183303146.png" alt="image-20220821183303146" style="zoom:50%;">
+
+<p>具体的每个门里面的值是要通过training data来计算的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821183958787.png" alt="image-20220821183958787" style="zoom:50%;">
+
+<p>对于$x_1$,$x_2$作为输入，会乘上不同的权重，分别输入到不同的Gate。这会导致参数几乎是4倍。</p>
+<p>$x_t$通过线性变换成为$z^i$(操控输入门)、$z^f$（操控遗忘门）、$z^o$（操控输出门）。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821184608057.png" alt="image-20220821184608057" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821184631588.png" alt="image-20220821184631588" style="zoom:50%;">
+
+<p>以上只是简化版本的LSTM，实际上还会有个拓展。</p>
+<p>GRU是LSTM的简化版本。</p>
+<p>Q：那么在RNN里面，又该如何定义loss呢？</p>
+<p>同样可以采用交叉熵的方式进行计算。如下图这个分类问题。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190108237.png" alt="image-20220821190108237" style="zoom:50%;">
+
+<p>训练同样是通过梯度下降的方式进行更新参数。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190202712.png" alt="image-20220821190202712" style="zoom:50%;">
+
+<p>BPTT是类似于Backpropagagtion，只不过考虑了时间的要素。</p>
+<p>当我们训练RNN的时候，发现loss图像出现剧烈的抖动呢？</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190348476.png" alt="image-20220821190348476" style="zoom:50%;">
+
+<p>训练 RNN时，error surface要么就是非常平坦，要么就是非常陡峭。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821190523540.png" alt="image-20220821190523540" style="zoom:50%;">
+
+<p>应对策略？</p>
+<p><u>当梯度大于一个值的时候，就等于该值。</u></p>
+<p>Q：为什么RNN会有这种奇怪的特性呢？</p>
+<p>可以看一个最简单的RNN的例子。如下图所示。</p>
+<p>$W$一个很小的变化，对结果会造成巨大的影响。</p>
+<p>$W$的梯度时大时小。$W$一旦变化，就会对结果造成天崩地裂的影响。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821191127347.png" alt="image-20220821191127347" style="zoom:50%;">
+
+<p>那么有什么样的技巧可以帮助我们应对呢？</p>
+<p><u>LSTM，就可以避免梯度消失和梯度爆炸。为什么可以避免这个问题呢？</u></p>
+<p>LSTM和RNN对memory的处理是不一样的，LSTM对原来的memory是乘上一个值，再进行相加的。memory的值是不会被覆盖掉的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821192933337.png" alt="image-20220821192933337" style="zoom:50%;">
+
+<p>GRU只有两个Gate，需要的参数量相对少，故在训练的时候更加鲁棒。</p>
+<p>还有其他方案可以应对梯度消失的问题。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193234480.png" alt="image-20220821193234480" style="zoom:50%;">
+
+<h3 id="RNN的更多应用"><a href="#RNN的更多应用" class="headerlink" title="RNN的更多应用"></a>RNN的更多应用</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193456811.png" alt="image-20220821193456811" style="zoom:50%;">
+
+<p>Key words extraction.</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193830138.png" alt="image-20220821193830138" style="zoom:50%;">
+
+<p>CTC?会输出空符号。以此来解决叠字的问题。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821193930794.png" alt="image-20220821193930794" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195033439.png" alt="image-20220821195033439" style="zoom:50%;">
+
+<p>需要通过符号来进行终止。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195144999.png" alt="image-20220821195144999" style="zoom:50%;">
+
+<p>对一段语音信号，不进行辨识，直接翻译成另一个语言的尝试？所谓直接对语言信号进行翻译。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195326000.png" alt="image-20220821195326000" style="zoom:50%;">
+
+<p>将树状图描述成一个Sequence，进行学习seqToSeq的模型。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220821195538540.png" alt="image-20220821195538540" style="zoom:50%;">
+
+<h2 id="（补充）Graph-Neural-Network"><a href="#（补充）Graph-Neural-Network" class="headerlink" title="（补充）Graph Neural Network"></a>（补充）Graph Neural Network</h2><h3 id="GNN：why"><a href="#GNN：why" class="headerlink" title="GNN：why"></a>GNN：why</h3><p>对于具备图结构的事物，可以进行一些分类。如对化学分子的结构进行分类。</p>
+<p>或者可以进行一些图结构的生成任务。如针对新冠病毒的药物开发。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831212808764.png" alt="image-20220831212808764" style="zoom:50%;">
+
+<p>通过人物和人物之间的关系，人物本身具备的信息，交给图神经网络去处理，来进行判断是不是凶手。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831212917745.png" alt="image-20220831212917745" style="zoom:50%;">
+
+<p>同时考虑entity本身的信息和其他entity之间的关系。</p>
+<p>当未标签的数据数量远大于已经有标签的数据的时候？近朱者赤近墨者黑。通过节点之间的关系来进行判断？</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831213225337.png" alt="image-20220831213225337" style="zoom:50%;">
+
+<h3 id="Convolution"><a href="#Convolution" class="headerlink" title="Convolution"></a>Convolution</h3><p>主要集中有两个方法，Spatial-based, Spectral-based(通过傅立叶变化，然后进行滤波处理然后巴拉巴拉的)。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831213849699.png" alt="image-20220831213849699" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220831213903383.png" alt="image-20220831213903383" style="zoom:50%;">
+
+<h3 id="Spatial-based-GNN"><a href="#Spatial-based-GNN" class="headerlink" title="Spatial based GNN"></a>Spatial based GNN</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904094945886.png" alt="image-20220904094945886" style="zoom:50%;">
+
+<p>两个重要概念，Aggregate和Readout。</p>
+<p>以NN4G为例子。</p>
+<p>Aggregate</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095303117.png" alt="image-20220904095303117" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095353869.png" alt="image-20220904095353869" style="zoom:50%;">
+
+<p>通过取平均值来计算。</p>
+<p>以DCNN为例子。</p>
+<p>每一层考虑的距离是不一样的。如果叠k层，就可以考虑到节点的k-neriborhood的内容。  </p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095745500.png" alt="image-20220904095745500" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904095832238.png" alt="image-20220904095832238" style="zoom:50%;">
+
+<p>MoNET</p>
+<p>用距离来做weighted sum。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904100706019.png" alt="image-20220904100706019" style="zoom:50%;">
+
+<p>GAT,对邻居做attention。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904101020622.png" alt="image-20220904101020622" style="zoom:50%;">
+
+<p>已经有的library</p>
+<p>DeepGraphLibrary</p>
+<h3 id="Spectral-Based-Convolution"><a href="#Spectral-Based-Convolution" class="headerlink" title="Spectral-Based Convolution"></a>Spectral-Based Convolution</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904101544932.png" alt="image-20220904101544932" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904101646855.png" alt="image-20220904101646855" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104113767.png" alt="image-20220904104113767" style="zoom:50%;">
+
+<p>每一个节点上对应一个向量作为信号。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104354204.png" alt="image-20220904104354204" style="zoom:50%;">
+
+<p>正交分解</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104553327.png" alt="image-20220904104553327" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904104840319.png" alt="image-20220904104840319" style="zoom:50%;">
+
+<p>请耐下心来听和研究，即便不能完全听懂，也是可以作为一个铺垫和印象的。</p>
+<p>患得患失，是你最大的问题～有时候拥有很多东西，你反而变得有很多顾虑！</p>
+<p>频率越大，相邻两个点之间的信号变化量也就更大。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904135700789.png" alt="image-20220904135700789" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904135833576.png" alt="image-20220904135833576" style="zoom:50%;">
+
+<p>两个节点之间的能量差。可以用来量化图的频率？</p>
+<p>用特征值来定义频率。</p>
+<h2 id="补充-Unsupervised-Learning-Word-Embedding"><a href="#补充-Unsupervised-Learning-Word-Embedding" class="headerlink" title="(补充) Unsupervised Learning: Word Embedding"></a>(补充) Unsupervised Learning: Word Embedding</h2><p>如何将word表示成为一个向量，典型的做法就是通过one hot向量。</p>
+<p>但是通过这种方式，没办法区分各个词汇之间的关系。由此产生了Word Class。但是类别和类别之间的关系也没办法体现出来。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904141141750.png" alt="image-20220904141141750" style="zoom:50%;">
+
+<p>由此提出了Word Embedding，维度远远小于one hot的方式。</p>
+<p>而Word embedding内的每一个维度都会具备自己的含义。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904141248416.png" alt="image-20220904141248416" style="zoom:50%;">
+
+<p>而word embedding主要是通过无监督学习的方式，去让机器自己去学习。只知道输入，不知道输出。</p>
+<h2 id="第六节-生成式对抗网络"><a href="#第六节-生成式对抗网络" class="headerlink" title="第六节 生成式对抗网络"></a>第六节 生成式对抗网络</h2><p>Network as Generator</p>
+<p>把network用来进行生成，特别在，输入会加入一个特殊的simple distribution。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142100944.png" alt="image-20220904142100944" style="zoom:50%;">
+
+<p>这个Z每次都不一样，都是我们从一个已知的分布里面simple出来的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142138034.png" alt="image-20220904142138034" style="zoom:50%;">
+
+<p>我们确定Z的分布是一个简单的分布。随着simple到的Z不同，网络的输出也就是会不一样。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142239216.png" alt="image-20220904142239216" style="zoom:50%;">
+
+<h3 id="6-1-为什么需要Generator"><a href="#6-1-为什么需要Generator" class="headerlink" title="6.1 为什么需要Generator"></a>6.1 为什么需要Generator</h3><img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142349826.png" alt="image-20220904142349826" style="zoom:50%;">
+
+<p>给定过去的画面，来预测未来的画面。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142446339.png" alt="image-20220904142446339" style="zoom:50%;">
+
+<p>小精灵走着就分裂，或者消失。在转角处。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904142711956.png" alt="image-20220904142711956" style="zoom:50%;">
+
+<p>何时我们特别需要distribution，当我们需要creativity的时候。</p>
+<p>同样的输入，不同的输出。</p>
+<p>比如，用机器画个画，多帅哦！</p>
+<p>比如，训练聊天机器人，也是需要创造的。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904164507011.png" alt="image-20220904164507011" style="zoom:50%;">
+
+<p>要有想象力！</p>
+<p>每个人都可能会有不同的答案！</p>
+<h3 id="6-2-GAN"><a href="#6-2-GAN" class="headerlink" title="6.2 GAN"></a>6.2 GAN</h3><p>生成式对抗网络。</p>
+<p>GAN的动物园～</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904164734972.png" alt="image-20220904164734972" style="zoom:50%;">
+
+<p>Unconditional Generation特制是没有x的情况。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904164906003.png" alt="image-20220904164906003" style="zoom:50%;">
+
+<p>输入向量不同，输出就会跟着改变。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165001774.png" alt="image-20220904165001774" style="zoom:50%;">
+
+<p>不同的distribution之间的差异，可能没有想象的那么大。</p>
+<p>在gan里面，需要额外训练一个Discriminator。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165144371.png" alt="image-20220904165144371" style="zoom:50%;">
+
+<p>我们可以称之为区分者(我自己瞎取的名字)，架构是完全由自己决定的。</p>
+<p>GAN的主要思想，物尽天择。两个网络同时训练对应两个物种的进化。也就是对应Generator和Discriminator。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165428282.png" alt="image-20220904165428282" style="zoom:50%;">
+
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165636069.png" alt="image-20220904165636069" style="zoom:50%;">
+
+<p>Discriminator也会变得越来越严苛。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904165959165.png" alt="image-20220904165959165" style="zoom:50%;">
+
+<p>先定住Generator，训练Discriminator，目标是区分Generator生成的图片和真实的图片。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904170227387.png" alt="image-20220904170227387" style="zoom:50%;">
+
+<p>定住Discriminator，再来训练Generator。使其生成的结果，尽可能地骗过Discriminator。希望调整Generator，使其获得的图片在Discriminator的评分越高越好。</p>
+<p>接下来就是两个步骤，进行反复地执行。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904170603319.png" alt="image-20220904170603319" style="zoom:50%;">
+
+<p>使用GAN，产生我没有见过的人脸。</p>
+<img src="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B2022%E7%AC%94%E8%AE%B0/image-20220904171103851.png" alt="image-20220904171103851" style="zoom:50%;">
+
+<h3 id="6-3-Theory-behind-GAN"><a href="#6-3-Theory-behind-GAN" class="headerlink" title="6.3 Theory behind GAN"></a>6.3 Theory behind GAN</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag"># 课程笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B005/" rel="prev" title="论文笔记05：Optimized Paillier’s Cryptosystem with Fast Encryption and Decryption">
+                  <i class="fa fa-chevron-left"></i> 论文笔记05：Optimized Paillier’s Cryptosystem with Fast Encryption and Decryption
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02022HW1/" rel="next" title="李宏毅机器学习2022HW1">
+                  李宏毅机器学习2022HW1 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leiouisacat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

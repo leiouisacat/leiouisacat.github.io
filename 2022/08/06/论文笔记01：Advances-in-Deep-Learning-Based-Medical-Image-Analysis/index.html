@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言目前人工智能的快速发展，尤其是深度学习技术的发展，使以深度学习技术为基础的医疗研究成为热门方向。该文章主要综述了深度学习技术在医疗图像分析和临床上的应用。 指出了相关领域存在的问题并指出了未来可能改进的方向。未来的方向主要包括：federated learning, benchmark dataset collection, 以及utilizing domain subject knowle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文笔记01：Advances in Deep Learning-Based Medical Image Analysis">
+<meta property="og:url" content="http://example.com/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B001%EF%BC%9AAdvances-in-Deep-Learning-Based-Medical-Image-Analysis/index.html">
+<meta property="og:site_name" content="Leiouisacat">
+<meta property="og:description" content="前言目前人工智能的快速发展，尤其是深度学习技术的发展，使以深度学习技术为基础的医疗研究成为热门方向。该文章主要综述了深度学习技术在医疗图像分析和临床上的应用。 指出了相关领域存在的问题并指出了未来可能改进的方向。未来的方向主要包括：federated learning, benchmark dataset collection, 以及utilizing domain subject knowle">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-71988dcb8c87ef8135d07088415ffd1d_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-71988dcb8c87ef8135d07088415ffd1d_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-b7eaa5201165ba824e98a04d6ce4ef61_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pica.zhimg.com/80/v2-660b28b854cac883698f9fa88c05d3e2_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pica.zhimg.com/80/v2-cd87418ade141a51833eb95b203a4ee7_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-892ca5c733e6b875c7b6501cb0acd9b8_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-7531e574bce2cd5f4047154951df1a27_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-6b200ad389bae95abef497d5a0610f16_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-b9da24c15128a9e3de55c781b798ced0_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-3c804356e89a46c9472d595815e2f880_1440w.png?source=d16d100b">
+<meta property="article:published_time" content="2022-08-06T06:41:42.000Z">
+<meta property="article:modified_time" content="2022-08-06T07:19:42.703Z">
+<meta property="article:author" content="Leiouisacat">
+<meta property="article:tag" content="论文笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic2.zhimg.com/80/v2-71988dcb8c87ef8135d07088415ffd1d_1440w.png?source=d16d100b">
+
+
+<link rel="canonical" href="http://example.com/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B001%EF%BC%9AAdvances-in-Deep-Learning-Based-Medical-Image-Analysis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B001%EF%BC%9AAdvances-in-Deep-Learning-Based-Medical-Image-Analysis/","path":"2022/08/06/论文笔记01：Advances-in-Deep-Learning-Based-Medical-Image-Analysis/","title":"论文笔记01：Advances in Deep Learning-Based Medical Image Analysis"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>论文笔记01：Advances in Deep Learning-Based Medical Image Analysis | Leiouisacat</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Leiouisacat</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-Technologies-in-Medical-Image-Analysis"><span class="nav-number">3.</span> <span class="nav-text">AI Technologies in Medical Image Analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clinical-Applications"><span class="nav-number">4.</span> <span class="nav-text">Clinical Applications</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Challenges-and-Future-Directions"><span class="nav-number">5.</span> <span class="nav-text">Challenges and Future Directions</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leiouisacat"
+      src="/images/hp.jpeg">
+  <p class="site-author-name" itemprop="name">Leiouisacat</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leiouisacat" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leiouisacat" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:leiouisacat@gmail.com" title="E-Mail → mailto:leiouisacat@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leiouisacat" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B001%EF%BC%9AAdvances-in-Deep-Learning-Based-Medical-Image-Analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hp.jpeg">
+      <meta itemprop="name" content="Leiouisacat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="论文笔记01：Advances in Deep Learning-Based Medical Image Analysis | Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文笔记01：Advances in Deep Learning-Based Medical Image Analysis
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-08-06 14:41:42 / Modified: 15:19:42" itemprop="dateCreated datePublished" datetime="2022-08-06T14:41:42+08:00">2022-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BB%E7%96%97%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">医疗人工智能</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://pic2.zhimg.com/80/v2-71988dcb8c87ef8135d07088415ffd1d_1440w.png?source=d16d100b" alt="img"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>目前人工智能的快速发展，尤其是深度学习技术的发展，使以深度学习技术为基础的医疗研究成为热门方向。该文章主要综述了深度学习技术在医疗图像分析和临床上的应用。</p>
+<p>指出了相关领域存在的问题并指出了未来可能改进的方向。未来的方向主要包括：federated learning, benchmark dataset collection, 以及utilizing domain subject knowledge as priors。</p>
+<p>结论：目前最新的深度学习技术在医疗图像分析上取得了巨大的成功，保证了高准确率、高效率、鲁棒性和可测量性。但目前的技术应用依赖于<strong>大规模、高质量</strong>的数据集，技术的进步则有望改善这一点。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>随着人工智能(AI)技术的快速发展，利用人工智能技术挖掘临床数据已成为医学行业的一个主要趋势。深度学习在医学图像分析中应用涉及到与计算机视觉相关的任务，如分类、检测、分割和配准。其中，分类、检测和分割是基本的和应用最广泛的任务。本文综述了医学图像分析领域的最新进展，以及具有代表性的临床应用。</p>
+<p>该综述主要陈述的内容主要为两个方面：</p>
+<p>简要回顾了常见的医学成像模式，以及医学图像分析中各种特定任务的技术，包括<strong>分类、检测、分割和配准</strong>。</p>
+<p>提供了关于不同类型疾病的详细的临床应用，并讨论了该领域存在的问题，并提供了可能的解决方案和未来的研究方向。</p>
+<h2 id="AI-Technologies-in-Medical-Image-Analysis"><a href="#AI-Technologies-in-Medical-Image-Analysis" class="headerlink" title="AI Technologies in Medical Image Analysis"></a>AI Technologies in Medical Image Analysis</h2><p>临床常用于诊断分析的图像模式包括投影成像(如x射线成像)、计算机断层扫描(CT)、超声成像和磁共振成像(MRI)。</p>
+<p>MRI序列包括T1、T1-w、T2、T2-w、弥散加权成像(DWI)、表观扩散系数(ADC)和流体衰减反转恢复(FLAIR)。下图展示了一些医学图像模式的示例及临床应用。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-71988dcb8c87ef8135d07088415ffd1d_1440w.png?source=d16d100b" alt="img"></p>
+<p><strong>医学图像分析中的图像分类</strong></p>
+<p>图像分类用于医学图像分析的一个直接用途：将输入图像或一系列图像分类为包含一个（或几个)预定义的疾病或无疾病(即健康病例）。</p>
+<p>图像分类任务的典型临床应用包括：皮肤病学中的皮肤病识别、眼科中的眼病识别（如糖尿病视网膜病变、青光眼和角膜疾病。乳腺癌和脑癌等各种癌症的病理图像分类也属于这一领域。</p>
+<p>卷积神经网络(CNN)是图像分析的主要分类框架。随着深度学习的发展，CNN的框架也在不断改进。</p>
+<p>AlexNet是一种卷积神经网络，它由重复卷积组成，每个卷积随后是ReLU和最大池化操作，伴随着下采样。(解决数据分布不均衡的下采样的目的就从多数集中选出一部分数据与少数集重新组合成一个新的数据集。)</p>
+<p>VGGNet使用3×3卷积核和2×2最大池化来简化AlexNet的结构，并通过简单地增加网络的数量和深度来显示出更好的性能。通过结合和堆叠1×1、3×3和5×5卷积核和3×3池，初始网络及其变体增加了网络的宽度和适应性。ResNet和DenseNet都通过跳过连接来缓解梯度消失的问题。SENet提出了一个挤压和激励模块，使模型能够更多地关注信息最丰富的信道特征。</p>
+<p>下图展示了一些常用的基于cnn的分类网络架构。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-b7eaa5201165ba824e98a04d6ce4ef61_1440w.png?source=d16d100b" alt="img"></p>
+<p><img src="https://pica.zhimg.com/80/v2-660b28b854cac883698f9fa88c05d3e2_1440w.png?source=d16d100b" alt="img"></p>
+<p><strong>评价指标</strong>。精度是已识别图像中真正例的比例。召回率是在测试集中所有正例样本中被正确识别为正例的比例。精度率用于评价模型的全局精度。F1分数可以被认为是模型的精度和召回率的调和平均值，它同时考虑了分类模型的精度和召回率。ROC曲线通常用于评价二元分类模型的预测效果，而kappa系数是在<strong>多分类任务中</strong>衡量模型精度的一种方法。</p>
+<p>下图展示了评价指标的计算公式。TP为真正例，FP为假正例，FN为假反例，TN为真反例，N为测试样本的数量。</p>
+<p><img src="https://pica.zhimg.com/80/v2-cd87418ade141a51833eb95b203a4ee7_1440w.png?source=d16d100b" alt="img"></p>
+<p><strong>医学图像分析中的对象检测</strong></p>
+<p>目标检测算法包括<strong>识别</strong>和<strong>定位</strong>任务。</p>
+<p>在医学图像分析中，检测通常是为了检测患者异常的早期体征。检测任务的典型临床应用包括胸部CT或射线图像中的肺结节检测，CT图像中的病变检测，或乳房x光片。</p>
+<p>对象检测算法可以分为两种方法，基于锚的方法（anchor-based approach）或无锚的方法（ anchor-free approach）。其中，anchor-based approach可以进一步划分为单阶段算法或多阶段算法。一般来说，单阶段算法计算效率更好，而两&#x2F;多级算法具有更好的检测性能。</p>
+<p>YOLO家族和单镜头多盒探测器(SSD)是两种经典和广泛使用的单级探测器。如下图(a)和(b)所示，这两种架构都基于前馈卷积网络，产生固定数量的边界框及其为框中给定类的对象实例提供相应的分数。采用非极大值抑制步骤来生成最终的预测。YOLO在单尺度特征图上工作，而SSD利用多尺度特征图，因而产生更好的检测性能。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-892ca5c733e6b875c7b6501cb0acd9b8_1440w.png?source=d16d100b" alt="img"></p>
+<p>两阶段（two stage）框架生成一组ROI，并通过一个网络对每个ROI进行分类。</p>
+<p>Faster-RCNN框架及其后代Mask-RCNN是最流行的两阶段框架。Faster-RCNN和Mask-RCNN之间的主要区别是Mask-RCNN有一个实例分割分支。如下图(c)所示。</p>
+<p>CornerNet是一个单一的卷积神经网络，它通过使用成对的关键点，避免了使用锚框，其中对象边界框由左上角和右下角表示。如下图(d)所示。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-7531e574bce2cd5f4047154951df1a27_1440w.png?source=d16d100b" alt="img"></p>
+<p><strong>医学图像分析的分割。</strong>图像分割是一个像素标记问题，它将图像划分为具有相似属性的区域。对于医学图像分析，分割的目的是确定图像中的器官或解剖结构的轮廓。</p>
+<p>自全卷积神经网络(FCN)被提出以来，图像分割取得了很大的成功。通过一个跳跃架构，它将粗信息、语义信息和局部信息结合到密集的预测中。</p>
+<p>根据输入数据维度，医学图像分割方法可分为二维方法和三维方法两类。UNet体系结构是最流行的医学图像分割的FCN。如下图所示，U-Net由一个收缩路径（下样本侧）和一个扩展路径（上样本侧）组成。收缩路径遵循典型的CNN架构。它包括重复应用卷积，然后是ReLU和最大池操作(with stride for down sampling)。在每个降采样步骤中，它还会使特征通道的数量增加一倍。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-6b200ad389bae95abef497d5a0610f16_1440w.png?source=d16d100b" alt="img"></p>
+<p>Dice相似系数和联合上的交集(IOU)是评价分割方法性能的两个主要评价指标，其定义如下:</p>
+<p><img src="https://pic2.zhimg.com/80/v2-b9da24c15128a9e3de55c781b798ced0_1440w.png?source=d16d100b" alt="img"></p>
+<p><strong>医学图像分析中的图像配准</strong></p>
+<p>医学图像配准的目标是在不同的时间（用于纵向研究）、不同的成像方式(如CT、MRI)、不同的患者（用于受试者间的研究）或从不同的观点获得的图像中建立最佳的对应关系。</p>
+<p>图像配准在重要的临床应用中是重要的预处理步骤。</p>
+<p>根据不同的观点，图像配准方法可以进行不同的分类。例如，图像配准方法可以根据所涉及的图像模式分为单模态或多模态。（单模态的表示学习负责将信息表示为计算机可以处理的数值向量或者进一步抽象为更高层的特征向量，而多模态表示学习是指通过利用多模态之间的互补性，剔除模态间的冗余性，从而学习到更好的特征表示。）根据由于几何变换的性质，这些方法也可以分为刚性类或非刚性类。根据数据维数，配准方法可分为2D&#x2F;2D、3D&#x2F;3D、2D&#x2F;3D等。此前，图像配准是一个优化问题，其目的是通过优化相似差和(SSD)、互信息(MI)和互相关(CC)等指标来搜索最佳的几何变换。自深度学习复兴开始以来，各种基于深度学习的配准方法被提出，并取得了很好的性能。</p>
+<p>对于性能评价，骰子系数和均方误差(MSE)是两个主要的评价指标。</p>
+<h2 id="Clinical-Applications"><a href="#Clinical-Applications" class="headerlink" title="Clinical Applications"></a>Clinical Applications</h2><p>深度学习的临床应用主要针对人体的四大系统：神经系统、心血管系统、消化系统、骨骼系统。主要集中于以下具有代表性的疾病：<strong>脑部疾病、心脏疾病、肝部疾病和骨骼创伤</strong>。</p>
+<p><strong>脑部疾病。</strong>主要讨论<strong>中风、颅内出血、颅内动脉瘤。</strong></p>
+<p><strong>中风。深度学习在中风的病变图像分割（segmentation）上发挥了重大作用。</strong></p>
+<p>Chen et al. 使用DWI图像作为输入来分割急性缺血病变，平均Dice得分为0.67。 </p>
+<p>Clèrigues et al .使用了使用多模态MRI图像，基于深度学习对急性和亚急性卒中病变进行图像分割，分别达到了0.84和0.59的Dice得分。</p>
+<p> Liu et al. 使用U形网络（Res-CNN），通过多模态MRI图像，自动分割急性缺血中风病变，Dice系数为0.742。</p>
+<p> Zhao et al.  提出了半监督学习方法，用弱标记对象来检测急性缺血中风病变，Dice系数为0.642。</p>
+<p>同样有不使用MRIs，而是使用CT perfusion images的学习策略 ，Dice系数为0.49。</p>
+<p> <strong>颅内出血。DL在自动检测颅内出血和其类型方面存在可能。</strong></p>
+<p> Chilamkurthy et al. 基于一个名为CQ500的公开数据集（包括来自20个中心的313,318次头部CT扫描），自动检测颅内出血，实现了 AUC of 0.92。他们使用原始的临床放射学报告和三名放射科医生的共识作来检验其方法的正确性。</p>
+<p>Ye et al. 提出了一种3D卷积循环神经网络(CNN-RNN)，用于检测颅内出血。算法在脑内出血任务下的AUC为0.94，心室内任务下AUC为0.93，硬膜下的AUC为0.96，硬膜外的AUC为0.94，蛛网膜下腔亚型分类任务下AUC为0.89。</p>
+<p> Ker et al. 在基于3D CNN的急性脑出血的诊断中，提出在预处理中应用图象阈值的策略，将F1指标从0.919提升到0.952。</p>
+<p> Singh et al. 同样采用了预处理的方式， 通过 normalizing 3D volumetric scans using intensity profifile 来提升基于基于3D CNN的急性脑出血的诊断的准确率。实验结果显示，四种急性脑出血的F1评分分别为0.96、0.93、0.98和0.99。</p>
+<p> <strong>颅内动脉瘤。</strong>颅内动脉瘤是一种常见的危及生命的疾病，通常由创伤、血管疾病或先天性发展引起，在人群中的发病率为3.2%。<strong>计算机断层扫描血管造影(CTA)和磁共振血管造影(MRA)是非侵入性的方法，广泛用于颅内动脉瘤的诊断和术前规划。</strong></p>
+<p>Nakao et al. 构建了一个基于CNN的分类器来预测每个体素是在动脉瘤内还是在动脉瘤外，可以检测到94.2%的动脉瘤，每例有2.9个假阳性。</p>
+<p>Stember et al. 采用基于U-Net架构的CNN在MIP图像上检测动脉瘤，然后推导出动脉瘤的大小。</p>
+<p> Sichtermann et al. 建立了一个基于开源神经网络DeepMemedic的系统，用于从三维TOF-MRA数据中检测颅内动脉瘤。</p>
+<p>Ueda et al. 采用ResNet检测MRA图像动脉瘤，内部和外部测试数据集的敏感度分别为91%和93%。</p>
+<p>Allison et al. 提出了一种用HeadXNet分割CTA图像上动脉瘤的分割模型。</p>
+<p>Shi et al. 提出了一种基于三维贴片的检测颅内动脉瘤的深度学习模型。该模型在基于残差的编码器-解码器架构中同时利用了空间和信道注意力（ spatial and channel）机制。</p>
+<p><strong>心脏。</strong>超声心动图、CT和MRI是常用的对心血管系统的功能和结构进行无创评估的医学成像方式。对上述模式的图像进行自动分析，可以帮助医生研究心肌的结构和功能，找到患者心力衰竭的原因，识别潜在的组织损伤等等。</p>
+<p><strong>标准扫描平面的识别（Identifification of Standard Scan Planes）。</strong></p>
+<p>Zhang et al.  构建了一个全自动、可扩展的超声心动图解释分析机制，包括视图识别、心室分割、结构和功能的量化以及疾病检测。</p>
+<p>Howard et al. 在超过8000个超声心动图视频上训练双流网络进行14种不同的扫描平面识别。实验表明，该方法可以使视频扫描平面分类的错误率减半，且错误分类的类型与人类专家的意见差异非常相似。</p>
+<p><strong>心脏结构的分割（Segmentation of Cardiac Structures）</strong></p>
+<p>Vigneault et al. 提出了一种新的深度CNN架构，称为Ω-Net，用于全自动心脏结构分割。</p>
+<p>Xiong et al. 开发了一种名为AtriaNet的16层CNN模型，可以自动分割左房(LA)心外膜和心内膜。实验表明，AtriaNet的表现优于最先进的cnn，心外膜和心内膜的Dice评分分别为0.940和0.942。</p>
+<p>Moccia et al. 修改和训练了ENet，一个全卷积神经网络，以提供左心室的疤痕组织分割。</p>
+<p>Bai et al. 提出了一种将全卷积网络和递归神经网络相结合的图像序列分割算法，并将时空信息整合到分割任务中。</p>
+<p>Morris et al. 开发了一种新的机制，将MRI&#x2F;CT数据配对，并放置到单独的图像通道中，使用整个三维图像训练三维神经网络，对心脏子结构进行分割。</p>
+<p><strong>冠状动脉分割（Coronary Artery Segmentation）</strong></p>
+<p>Shen et al.提出了一种结合了深度学习和传统的水平集(traditional-level set)方法的冠状动脉CTA分割框架。采用三维FCN技术学习冠状动脉的三维语义特征。此外，在整个网络中增加了一个注意力门，旨在增强血管，抑制无关的区域。通过水平集对输出进行优化，平滑边界，更好地拟合真实的分割。该算法在直观、定量上的分割效果明显优于普通的三维FCN。</p>
+<p>He et al.利用混合表示学习方法开发了一种新的血管中心线提取框架。其主要的想法是使用cnn来学习图像作物中血管的局部外观，同时使用另一个点云网络来学习整个图像中血管的全局几何形状。</p>
+<p><strong>冠状动脉钙化及斑块检测（Coronary Artery Calcium and Plaque Detection）</strong></p>
+<p>Zhang et al.建立了一个端到端的学习框架，进行非对比心脏CT特异性冠状动脉钙化识别。可以在测试过程中根据给定的CT扫描直接产生准确的结果。</p>
+<p> Liu et al.提出了一种以血管为中心的三维卷积网络来自动分割动脉斑块，包括三种亚型：钙化斑块、非钙化斑块和混合钙化斑块。该方法在试验集中对钙化斑块、非钙化斑块和混合钙化斑块的Dice评分分别为0.83、0.73和0.68，具有潜在的临床应用价值。</p>
+<p><strong>肝脏</strong>。CT和MRI被广泛应用于肝病的早期检测、诊断和治疗。用CT或MRI自动分割肝部或者肝病变，在放疗规划、肝移植规划等方面具有重要意义。</p>
+<p><strong>肝病变的检测及分割（Liver Lesion Detection and Segmentation）</strong></p>
+<p>Vorontsov et al.使用深层cnn来检测和分割肝肿瘤。</p>
+<p>Wang et al.提出了一种注意力机制网络，使用额外的网络从连续切片中收集信息，用于肝部病变的分割。Seo et al.为了提高对小病变的治疗性能，提出了改进的U-Net(mU-Net)。</p>
+<p>Tang et al.提出了一种边缘增强的网络，在LiTS测试数据集的Dice评分为74.8%。</p>
+<p><strong>肝病变分类（ Liver Lesion Classifification）</strong></p>
+<p>与肝病变的分割或检测不同，由于没有关于病变分类的公共数据集，而且难以收集足够的数据，因此关于病变分类的工作很少。</p>
+<p> Zhen et al.提出了一种基于深度学习的肝肿瘤分类系统。该系统仅使用未增强的图像即可区分恶性和良性肝肿瘤，AUC评分为94.6%，此外还可以通过临床信息得到提高。</p>
+<p><strong>肝纤维化分期（Liver Fibrosis Staging）</strong></p>
+<p>肝纤维化分期对慢性肝病的防治具有重要意义。</p>
+<p>Liu et al.提出了一种利用CNNs和SVM对超声图像上的胶囊进行分类以获得分期评分的方法，该方法的分类AUC评分为97.03%。</p>
+<p>Yasaka et al.提出了两种深度CNNs模型，分别从CT和MRI图像中获得分期评分。</p>
+<p>Choi et al.对7491名患者进行了基于深度学习的健康数据模型的训练，并对891名患者进行了验证，验证数据集上的AUC评分为0.95-0.97。</p>
+<p><strong>其他肝病</strong></p>
+<p>术前预测微血管侵袭(MVI)对肝癌患者的治疗计划很有价值。</p>
+<h2 id="Challenges-and-Future-Directions"><a href="#Challenges-and-Future-Directions" class="headerlink" title="Challenges and Future Directions"></a>Challenges and Future Directions</h2><p>虽然深度学习模型在医学图像分析方面取得了巨大的成功，但<strong>小规模医疗数据集</strong>仍然是该领域的主要瓶颈。</p>
+<p>迁移学习(Transfer learning) 顾名思义就是把已训练好的模型（预训练模型）参数迁移到新的模型来帮助新模型训练。考虑到大部分数据或任务都是存在相关性的，所以通过迁移学习我们可以将已经学到的模型参数（也可理解为模型学到的知识）通过某种方式来分享给新模型从而加快并优化模型的学习效率不用像大多数网络那样从零学习。</p>
+<p>受迁移学习技术的启发，一种可能的方法是进行迁移，将经过自然图像训练的模型适应医学图像应用。另一种可能的方法是应用联邦学习，通过它可以在多个数据中心之间协作地执行训练。</p>
+<p>表1总结了公开可用的数据集的示例。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-3c804356e89a46c9472d595815e2f880_1440w.png?source=d16d100b" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"># 论文笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/06/my-first-blog/" rel="prev" title="my first blog">
+                  <i class="fa fa-chevron-left"></i> my first blog
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/06/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB02%EF%BC%9AExplainable-Deep-Learning-Models-in-Medical-Image-Analysis/" rel="next" title="论文阅读02：Explainable Deep Learning Models in Medical Image Analysis">
+                  论文阅读02：Explainable Deep Learning Models in Medical Image Analysis <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leiouisacat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
