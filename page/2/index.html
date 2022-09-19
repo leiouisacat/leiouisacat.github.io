@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,6 +177,96 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B005/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hp.jpeg">
+      <meta itemprop="name" content="Leiouisacat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Leiouisacat">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B005/" class="post-title-link" itemprop="url">论文笔记05：Optimized Paillier’s Cryptosystem with Fast Encryption and Decryption</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-08-06 17:03:35 / Modified: 17:11:34" itemprop="dateCreated datePublished" datetime="2022-08-06T17:03:35+08:00">2022-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">密码学</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在上一篇文章中，Encryption Performance Improvements of the Paillier Cryptosystem主要集中于对Paillier加密过程的优化。而在本篇论文里有提及对于解密的优化。</p>
+<p>核心优化idea:</p>
+<p>At the heart of our optimization is a well-chosen subgroup of the underlying <img src="https://www.zhihu.com/equation?tex=Z_%7BN%7D%5E%7B*%7D" alt="Z_{N}^{*}"> , which is used as the randomness space for masking messages during encryption.The size of the subgroup is significantly smaller than that of <img src="https://www.zhihu.com/equation?tex=Z_%7BN%7D%5E%7B*%7D" alt="Z_{N}^{*}">  , leading to faster encryption and decryption algorithms of our optimization.</p>
+<p>核心上还是说，要找一个更小的子群作为随机数的生成空间，在不改变原先安全性的基础上提升Paillier的加解密效率。</p>
+<p>优化结果：加密过程比Jurik的优化方案要快2.7倍，比Paillier在Eurocrypt’99上的优化要快7.5倍。解密过程比Jurik的优化方案要快4.1倍，而与Paillier的优化方案是相类似的。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/06/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B005/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
